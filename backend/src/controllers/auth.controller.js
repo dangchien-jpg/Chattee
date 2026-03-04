@@ -4,7 +4,6 @@ import crypto from "crypto";
 import ms from "ms";
 import userModel from "../models/user.model.js";
 import sessionModel from "../models/session.model.js";
-import { NONAME } from "dns";
 
 export const signUp = async (req, res) => {
   try {

@@ -101,3 +101,31 @@ export const signOut = async (req, res) => {
     return res.status(500).json({ message: "Signout failed" });
   }
 };
+
+export const refreshToken = async (req, res) => {
+  try {
+    const token = req.cookies?.refreshToken;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const session = await sessionModel.findOne({ refreshToken: token });
+    if (!session) {
+      return res.status(403).json({ message: "Invalid or expired token" });
+    }
+
+    if (session.expiresAt < new Date()) {
+      return res.status(403).json({ message: "Expired token" });
+    }
+
+    const accessToken = jwt.sign(
+      { userId: session.userId },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: process.env.ACCESS_TOKEN_TTL },
+    );
+    return res.status(200).json({ accessToken });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

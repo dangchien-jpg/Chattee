@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoute from "../src/routes/auth.route.js";
 import userRoute from "../src/routes/user.route.js";
+import friendRoute from "../src/routes/friend.route.js";
 import { connectDb } from "./configs/db.config.js";
 import { protectedRoute } from "./middlewares/auth.middleware.js";
 
@@ -21,7 +22,7 @@ app.use("/api/auth", authRoute);
 // private routes
 app.use(protectedRoute);
 app.use("/api/users", userRoute);
-
+app.use("/api/friends", friendRoute);
 connectDb().then(() => {
   app.listen(PORT, () => {
     console.log("Server is running on: " + PORT);

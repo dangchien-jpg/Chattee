@@ -1,3 +1,4 @@
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
@@ -24,14 +25,15 @@ const ProtectedRoute = () => {
 
   if (starting || loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        Loading...
+      <div className="flex h-screen items-center justify-center bg-popover">
+        <SpinnerCustom />
       </div>
     );
   }
   if (!accessToken) {
     return <Navigate to={"/signin"} replace />;
   }
+
   return <Outlet></Outlet>;
 };
 

@@ -4,6 +4,7 @@ import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
 import ChatAppPage from "./pages/ChatAppPage";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+
 function App() {
   return (
     <>

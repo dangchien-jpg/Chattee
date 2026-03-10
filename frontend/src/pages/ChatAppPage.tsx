@@ -1,11 +1,14 @@
 import Logout from "@/components/auth/Logout";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { AppSidebar } from "@/components/sidebar/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const ChatAppPage = () => {
-  const user = useAuthStore((s) => s.user);
   return (
     <div>
-      {user?.userName}
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarTrigger />
+      </SidebarProvider>
       <Logout />
     </div>
   );

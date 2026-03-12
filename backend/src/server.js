@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import authRoute from "../src/routes/auth.route.js";
 import userRoute from "../src/routes/user.route.js";
 import friendRoute from "../src/routes/friend.route.js";
+import messageRoute from "../src/routes/message.route.js";
+import conversationRoute from "../src/routes/conversation.route.js";
 import { connectDb } from "./configs/db.config.js";
 import { protectedRoute } from "./middlewares/auth.middleware.js";
 
@@ -23,6 +25,9 @@ app.use("/api/auth", authRoute);
 app.use(protectedRoute);
 app.use("/api/users", userRoute);
 app.use("/api/friends", friendRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/conversations", conversationRoute);
+
 connectDb().then(() => {
   app.listen(PORT, () => {
     console.log("Server is running on: " + PORT);

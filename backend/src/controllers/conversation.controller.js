@@ -141,3 +141,19 @@ export const getMessages = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getUserConversationForSocketIO = async (userId) => {
+  try {
+    const conversations = await conversationModel.find(
+      {
+        "participants.userId": userId,
+      },
+      { _id: 1 },
+    );
+
+    return conversations.map((c) => c._id.toString());
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};

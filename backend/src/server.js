@@ -9,9 +9,9 @@ import messageRoute from "../src/routes/message.route.js";
 import conversationRoute from "../src/routes/conversation.route.js";
 import { connectDb } from "./configs/db.config.js";
 import { protectedRoute } from "./middlewares/auth.middleware.js";
+import { app, server } from "./socket/index.js";
 
 dotenv.config();
-const app = express();
 const PORT = process.env.PORT;
 // middlewares
 app.use(express.json());
@@ -29,7 +29,7 @@ app.use("/api/messages", messageRoute);
 app.use("/api/conversations", conversationRoute);
 
 connectDb().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log("Server is running on: " + PORT);
   });
 });

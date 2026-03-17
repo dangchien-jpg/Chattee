@@ -1,4 +1,6 @@
+import type { Conversation, Message } from "@/types/chat";
 import type { User } from "@/types/user";
+import type { Socket } from "socket.io-client";
 
 export interface AuthState {
   accessToken: string | null;
@@ -17,4 +19,49 @@ export interface AuthState {
   signIn: (userName: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
+}
+
+export interface ThemeState {
+  isDark: boolean;
+  toggleTheme: () => void;
+  setTheme: (dark: boolean) => void;
+}
+
+export interface ChatState {
+  conversations: Conversation[];
+  messages: Record<
+    string,
+    {
+      items: Message[];
+      hasMore: boolean;
+      nextCursor?: string | null;
+    }
+  >;
+  activeConversationId: string | null;
+  loading: boolean;
+  messageLoading: boolean;
+  reset: () => void;
+
+  setActiveConversation: (id: string | null) => void;
+  fetchConversations: () => void;
+  fetchMessages: (conversationId?: string) => Promise<void>;
+  sendDirectMessage: (
+    receiverId: string,
+    content: string,
+    imgUrl?: string,
+  ) => Promise<void>;
+  sendGroupMessage: (
+    conversationId: string,
+    content: string,
+    imgUrl?: string,
+  ) => Promise<void>;
+  addMessage: (message: Message) => Promise<void>;
+  updateConversation: (conversation: Conversation) => void;
+}
+
+export interface SocketState {
+  socket: Socket | null;
+  onlineUsers: string[];
+  connectSocket: () => void;
+  disconnectSocket: () => void;
 }

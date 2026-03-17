@@ -56,7 +56,8 @@ export interface ChatState {
     imgUrl?: string,
   ) => Promise<void>;
   addMessage: (message: Message) => Promise<void>;
-  updateConversation: (conversation: Conversation) => void;
+  updateConversation: (conversation: any) => void;
+  markAsSeen: () => Promise<void>;
 }
 
 export interface SocketState {

@@ -1,4 +1,4 @@
-import ChartCard from "@/components/chat/ChartCard";
+import ChatCard from "@/components/chat/ChatCard";
 import StatusBadge from "@/components/chat/StatusBadge";
 import UnreadCountBadge from "@/components/chat/UnreadCountBadge";
 import UserAvatar from "@/components/chat/UserAvatar";
@@ -29,6 +29,7 @@ const DirectMessageCard = ({
 
   const unreadCounts = conversation.unreadCounts[user._id];
   const lastMessage = conversation.lastMessage?.content ?? "";
+  const isOwn = user._id === (conversation.lastMessage?.sender?._id ?? "");
 
   const handleSelectConversation = async (id: string) => {
     setActiveConversation(id);
@@ -37,7 +38,7 @@ const DirectMessageCard = ({
     }
   };
   return (
-    <ChartCard
+    <ChatCard
       conversationId={conversation._id}
       name={otherUser.displayName ?? ""}
       timestamp={
@@ -73,7 +74,7 @@ const DirectMessageCard = ({
               : "text-muted-foreground",
           )}
         >
-          {lastMessage}
+          {isOwn ? `You: ${lastMessage}` : lastMessage}
         </p>
       }
     />

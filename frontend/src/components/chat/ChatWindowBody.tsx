@@ -1,6 +1,7 @@
 import ChatWelcomeScreen from "@/components/chat/ChatWelcomeScreen";
 import MessageItem from "@/components/chat/MessageItem";
 import { useChatStore } from "@/stores/useChatStore";
+import { useEffect, useState } from "react";
 
 const ChatWindowBody = () => {
   const {
@@ -9,10 +10,23 @@ const ChatWindowBody = () => {
     messages: allMessages,
   } = useChatStore();
 
+  const [lastMessageStatus, setLastMessageStatus] = useState<
+    "delivered" | "seen"
+  >("delivered");
+
   const messages = allMessages[activeConversationId!]?.items ?? [];
   const selectedConversation = conversations.find(
     (c) => c._id === activeConversationId,
   );
+
+  useEffect(() => {
+    const lastMessage = selectedConversation?.lastMessage;
+    if (!lastMessage) return;
+
+    const seenBy = selectedConversation?.seenBy ?? [];
+
+    setLastMessageStatus(seenBy.length > 0 ? "seen" : "delivered");
+  }, [selectedConversation]);
 
   if (!selectedConversation) {
     return <ChatWelcomeScreen />;
@@ -35,7 +49,7 @@ const ChatWindowBody = () => {
             message={message}
             messages={messages}
             selectedConversation={selectedConversation}
-            lastMessageStatus="delivered"
+            lastMessageStatus={lastMessageStatus}
           />
         ))}
       </div>

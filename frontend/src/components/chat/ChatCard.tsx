@@ -12,7 +12,7 @@ interface ChatCardProps {
   leftSection: React.ReactNode;
   subtitle: React.ReactNode;
 }
-const ChartCard = ({
+const ChatCard = ({
   conversationId,
   name,
   timestamp,
@@ -64,4 +64,4 @@ const ChartCard = ({
   );
 };
 
-export default ChartCard;
+export default ChatCard;

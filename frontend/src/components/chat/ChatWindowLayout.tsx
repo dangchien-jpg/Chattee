@@ -5,17 +5,32 @@ import ChatWindowSkeleton from "@/components/chat/ChatWindowSkeleton";
 import MessageInput from "@/components/chat/MessageInput";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { useChatStore } from "@/stores/useChatStore";
+import { useEffect } from "react";
 
 const ChatWindowLayout = () => {
   const {
     activeConversationId,
     conversations,
     messageLoading: loading,
-    messages,
+    markAsSeen,
   } = useChatStore();
 
   const selectedConversation =
     conversations.find((c) => c._id === activeConversationId) ?? null;
+
+  useEffect(() => {
+    if (!selectedConversation) return;
+
+    const markSeen = async () => {
+      try {
+        await markAsSeen();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    markSeen();
+  }, [markAsSeen, selectedConversation]);
 
   if (!selectedConversation) {
     return <ChatWelcomeScreen />;

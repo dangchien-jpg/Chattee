@@ -1,4 +1,4 @@
-import ChartCard from "@/components/chat/ChartCard";
+import ChatCard from "@/components/chat/ChatCard";
 import GroupChatAvatar from "@/components/chat/GroupChatAvatar";
 import UnreadCountBadge from "@/components/chat/UnreadCountBadge";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -25,7 +25,7 @@ const GroupCardChat = ({ conversation }: { conversation: Conversation }) => {
     }
   };
   return (
-    <ChartCard
+    <ChatCard
       conversationId={conversation._id}
       name={name}
       timestamp={

@@ -84,7 +84,7 @@ The application is built with a scalable architecture using **Node.js, Socket.IO
 * **Socket.IO (Realtime)**
 * **JWT Authentication**
 * **bcrypt (password hashing)**
-* **cloudinary (image storge)**
+* **Cloudinary (image storge)**
 
 ---
 
@@ -102,8 +102,8 @@ The application is built with a scalable architecture using **Node.js, Socket.IO
 
 ### 🌐 Deployment 
 
-* **backend: render**
-* **frontend: vercel**
+* **Backend -> Render**
+* **Frontend -> Vercel**
 
 
 ---

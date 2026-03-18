@@ -9,69 +9,69 @@ The application is built with a scalable architecture using **Node.js, Socket.IO
 ---
 
 ## ✨ Features
-🔐 Authentication
 
-Register / Login with JWT
+### 🔐 Authentication
 
-Secure password hashing (bcrypt)
+* Register & Login with JWT
+* Secure password hashing using bcrypt
 
-💬 Messaging
+---
 
-Realtime messaging with Socket.IO
+### 💬 Messaging
 
-Direct (1-1) chat & Group chat
+* Realtime messaging with Socket.IO
+* Direct (1-1) and Group conversations
+* Message grouping (similar to Messenger)
+* Message status: `delivered` / `seen`
+* Emoji support 😊
+* Infinite scroll (load older messages)
 
-Message grouping (like Messenger)
+---
 
-Message status: delivered / seen
+### 👥 Social Features
 
-Emoji support 😊
+* 🔍 Search users
+* 🤝 Send friend requests
+* ✅ Accept friend requests
+* ❌ Reject friend requests
+* 📃 Manage friend list
 
-Infinite scroll (load older messages)
+---
 
-👥 Social Features
+### 👨‍👩‍👧 Group Features
 
-🔍 Search users
+* Create group conversations
+* Support multiple participants
+* Realtime updates for all members
 
-🤝 Send friend request
+---
 
-✅ Accept friend request
+### 🟢 Presence System
 
-❌ Reject friend request
+* Realtime online/offline status
 
-📃 Friend list management
+---
 
-👨‍👩‍👧 Group Features
+### 📩 Notifications
 
-Create group conversations
+* Unread message count per conversation
 
-Multiple participants in a chat
+---
 
-Realtime updates for all members
+### 👤 User Profile
 
-🟢 Presence System
+* Update profile (name, avatar, etc.)
+* Display user information in conversations
 
-Online / Offline users
+---
 
-📩 Notifications
+### 🖼 Media Upload (Cloudinary)
 
-Unread message count per conversation
+* Upload and manage avatar images
+* Store image URLs in database
+* Fast delivery via CDN
+* Optimized image loading
 
-👤 User Profile
-
-Update profile (name, avatar, etc.)
-
-Display user info in conversations
-
-✅ Media Upload (Cloudinary)
-
-Upload avatar images
-
-Store image URLs in database
-
-Fast CDN delivery
-
-Optimized image loading
 
 ---
 

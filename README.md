@@ -212,12 +212,14 @@ npm install
 ```
 Create `.env.development` and `.env.production`  file:
 
+`.env.development`
 ```env.devlopment
 VITE_API_URL = your_api_url
 VITE_SOCKET_URL = your_socket_url
 ```
 
-```env.devlopment
+`.env.production`
+```env.production
 VITE_API_URL = your_api_url
 VITE_SOCKET_URL = your_socket_url
 ```

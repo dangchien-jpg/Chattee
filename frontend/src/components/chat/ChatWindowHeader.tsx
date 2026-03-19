@@ -18,7 +18,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
   if (!chat) {
     return (
       <header className="md:hidden sticky top-0 z-10 flex items-start gap-2 px-4 py-2 w-full">
-        <SidebarTrigger className="-ml-1 text-foreground" />
+        <SidebarTrigger className="" />
       </header>
     );
   }

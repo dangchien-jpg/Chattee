@@ -20,8 +20,20 @@ export interface Friend {
 }
 
 export interface FriendRequest {
+  receiverId: {
+    _id: string;
+    userName: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
+  senderId: {
+    _id: string;
+    userName: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
   _id: string;
-  username: string;
-  displayName: string;
-  avatarUrl?: string;
+  message?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

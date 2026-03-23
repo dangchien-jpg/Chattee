@@ -118,7 +118,9 @@ export const declineFriendRequest = async (req, res) => {
 
     await friendRequestModel.findByIdAndDelete(requestId);
 
-    return res.status(204);
+    return res
+      .status(200)
+      .json({ message: "Friend request declined successfully " });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
@@ -160,7 +162,7 @@ export const getAllFriends = async (req, res) => {
 export const getFriendRequests = async (req, res) => {
   try {
     const userId = req.user._id;
-    const populateFields = "_id username displayName avatarUrl";
+    const populateFields = "_id userName displayName avatarUrl";
 
     const [sent, received] = await Promise.all([
       friendRequestModel
@@ -183,7 +185,7 @@ export const unfriend = async (req, res) => {
     const { friendId } = req.params;
     const userId = req.user._id;
 
-    const friend = await friendModel.findById(friendId);
+    const friend = await friendModel.findById({ _id: friendId });
     if (!friend) {
       return res.status(404).json({ message: "Not found" });
     }

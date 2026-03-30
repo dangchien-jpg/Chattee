@@ -1,8 +1,8 @@
 import UserAvatar from "@/components/chat/UserAvatar";
+import AvatarUploader from "@/components/profile/AvatarUploader";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useChatStore } from "@/stores/useChatStore";
 import { useSocketStore } from "@/stores/useSocketStore";
 import type { User } from "@/types/user";
 
@@ -15,21 +15,18 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
   if (!user) return;
 
-  if (!user.bio) {
-    user.bio = "Have a good day!";
-  }
-
   const isOnline = onlineUsers.includes(user._id) ? true : false;
   return (
     <Card className="overflow-hidden p-0 h-52 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <CardContent className="mt-20 pb-8 flex flex-col sm:flex-row items-center sm:items-end gap-6">
-        <div>
+      <CardContent className=" px-6 md:mt-20 pb-8 flex flex-col sm:flex-row items-center sm:items-end md:gap-6 py-6 md:py-0">
+        <div className="relative">
           <UserAvatar
             type="profile"
             name={user.displayName}
             avatarUrl={user.avatarUrl ?? undefined}
             className="ring-4 ring-white shadow-lg"
           />
+          <AvatarUploader />
         </div>
 
         <div className="text-center sm:text-left flex-1">

@@ -1,6 +1,7 @@
 import friendModel from "../models/friend.model.js";
 import userModel from "../models/user.model.js";
 import friendRequestModel from "../models/friendRequest.model.js";
+import { io } from "../socket/index.js";
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -40,7 +41,7 @@ export const sendFriendRequest = async (req, res) => {
     }
 
     if (existingRequest) {
-      return res.status(400).json({ message: "A friend request is pending." });
+      return res.status(400).json({ message: "A friend request is pending" });
     }
 
     const request = await friendRequestModel.create({
@@ -48,6 +49,20 @@ export const sendFriendRequest = async (req, res) => {
       receiverId,
       message,
     });
+
+    const populateRequest = await request.populate([
+      {
+        path: "senderId",
+        select: "_id displayName avatarUrl userName",
+      },
+      {
+        path: "receiverId",
+        select: "_id displayName avatarUrl userName",
+      },
+    ]);
+
+    io.to(receiverId.toString()).emit("new-friend-request", populateRequest);
+    io.to(senderId.toString()).emit("friend-request-sent", populateRequest);
 
     return res.status(200).json({
       message: "Your friend request has been sent successfully",
@@ -86,6 +101,10 @@ export const acceptFriendRequest = async (req, res) => {
       .findById(request.senderId)
       .select("_id displayName avatarUrl")
       .lean();
+
+    const senderId = request.senderId;
+    io.to(senderId.toString()).emit("request-accepted", requestId);
+
     return res.status(200).json({
       message: "Friend request accepted successfully",
       newFriend: {
@@ -118,6 +137,9 @@ export const declineFriendRequest = async (req, res) => {
 
     await friendRequestModel.findByIdAndDelete(requestId);
 
+    const senderId = request.senderId;
+
+    io.to(senderId.toString()).emit("request-declined", requestId);
     return res
       .status(200)
       .json({ message: "Friend request declined successfully " });
@@ -140,8 +162,8 @@ export const getAllFriends = async (req, res) => {
           { userB: userId },
         ],
       })
-      .populate("userA", "_id displayName avatarUrl")
-      .populate("userB", "_id displayName avatarUrl")
+      .populate("userA", "_id displayName avatarUrl userName")
+      .populate("userB", "_id displayName avatarUrl userName")
       .lean();
 
     if (!friendships.length) {
@@ -185,18 +207,20 @@ export const unfriend = async (req, res) => {
     const { friendId } = req.params;
     const userId = req.user._id;
 
-    const friend = await friendModel.findById({ _id: friendId });
+    const friend = await friendModel.findOne({
+      $or: [
+        { userA: userId, userB: friendId },
+        { userA: friendId, userB: userId },
+      ],
+    });
+
     if (!friend) {
-      return res.status(404).json({ message: "Not found" });
+      return res.status(404).json({ message: "Friendship Not found" });
     }
 
-    if (friend.userA.equals(userId) || friend.userB.equals(userId)) {
-      await friendModel.findByIdAndDelete(friendId);
+    await friend.deleteOne();
 
-      return res.status(200).json({ message: "Unfriend successfully" });
-    }
-
-    return res.status(403).json({ message: "You are not allowed to unfriend" });
+    return res.status(200).json({ message: "Unfriend success" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });

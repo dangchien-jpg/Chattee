@@ -1,6 +1,13 @@
 import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { formatOnlineTime, cn } from "@/lib/utils";
-import { MoreHorizontal } from "lucide-react";
+import { LogOut, MoreHorizontal } from "lucide-react";
 
 interface ChatCardProps {
   conversationId: string;
@@ -11,6 +18,8 @@ interface ChatCardProps {
   unreadCounts?: number;
   leftSection: React.ReactNode;
   subtitle: React.ReactNode;
+  type: "group" | "direct";
+  onLeave: (conversationId: string) => Promise<void>;
 }
 const ChatCard = ({
   conversationId,
@@ -21,12 +30,14 @@ const ChatCard = ({
   unreadCounts,
   leftSection,
   subtitle,
+  type,
+  onLeave,
 }: ChatCardProps) => {
   return (
     <Card
       key={conversationId}
       className={cn(
-        "border-none p-3 cursor-pointer transition-smooth glass hover:bg-muted/30",
+        "border-none p-3 cursor-pointer transition-smooth glass hover:bg-muted/30 mt-2",
         isActive &&
           "ring-2 ring-primary/50 bg-gradient-to-tr from-primary-glow/10 to-primary-foreground",
       )}
@@ -53,10 +64,32 @@ const ChatCard = ({
             <div className="flex items-center gap-1 flex-1 min-w-0">
               {subtitle}
             </div>
-            <MoreHorizontal
-              className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 
-                        hover:size-5 transition-smooth"
-            />
+            {type === "group" && (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <MoreHorizontal
+                      className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 
+                          hover:size-5 transition-smooth"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="w-40 border-none rounded-sm"
+                    align="start"
+                  >
+                    <DropdownMenuGroup className="flex items-center justify-center gap-3">
+                      <LogOut className="size-4 text-destructive" />
+                      <DropdownMenuItem
+                        className="text-destructive  focus:text-destructive"
+                        onClick={() => onLeave(conversationId)}
+                      >
+                        Rời nhóm
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
           </div>
         </div>
       </div>

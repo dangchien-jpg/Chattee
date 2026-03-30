@@ -37,6 +37,8 @@ const DirectMessageCard = ({
       await fetchMessages();
     }
   };
+
+  const handleLeave = async (conversationId: string) => {};
   return (
     <ChatCard
       conversationId={conversation._id}
@@ -77,6 +79,8 @@ const DirectMessageCard = ({
           {isOwn ? `You: ${lastMessage}` : lastMessage}
         </p>
       }
+      type="direct"
+      onLeave={() => handleLeave(conversation._id)}
     />
   );
 };

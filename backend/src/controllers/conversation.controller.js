@@ -62,7 +62,22 @@ export const createConversation = async (req, res) => {
       { path: "lastMessage.senderId", select: "displayName avatarUrl" },
     ]);
 
-    return res.status(201).json({ conversation });
+    const participants = (conversation.participants || []).map((p) => ({
+      _id: p.userId?._id,
+      displayName: p.userId?.displayName,
+      avatarUrl: p.userId?.avatarUrl ?? null,
+      joinedAt: p.joinedAt,
+    }));
+
+    const formatted = { ...conversation.toObject(), participants };
+
+    if (type === "group") {
+      memberIds.forEach((userId) => {
+        io.to(userId).emit("new-group", formatted);
+      });
+    }
+
+    return res.status(201).json({ conversation: formatted });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
@@ -208,6 +223,46 @@ export const markAsSeen = async (req, res) => {
       message: "Marked as seen",
       seenBy: updated?.seenBy || [],
       myUnreadCount: updated?.unreadCounts[userId] || 0,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const leaveGroup = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const user = req.user;
+
+    const conversation = await conversationModel.findById(conversationId);
+    if (!conversation) {
+      return res.status(404).json({ message: "Conversation not found" });
+    }
+
+    const isMember = conversation.participants.some(
+      (u) => u.userId.toString() === user._id.toString(),
+    );
+
+    if (!isMember) {
+      return res
+        .status(400)
+        .json({ message: "You are not a member of this group" });
+    }
+
+    const filteredConversation = await conversationModel.findByIdAndUpdate(
+      { _id: conversationId },
+      { $pull: { participants: { userId: user._id } } },
+      { returnDocument: "after" },
+    );
+
+    if (filteredConversation.participants.length === 0) {
+      await conversationModel.findByIdAndDelete(conversationId);
+    }
+
+    return res.status(200).json({
+      message: "Leave group successful",
+      conversation: filteredConversation,
     });
   } catch (error) {
     console.error(error);

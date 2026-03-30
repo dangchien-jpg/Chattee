@@ -6,6 +6,7 @@ export const useFriendStore = create<friendState>((set, get) => ({
   loading: false,
   receivedList: [],
   sentList: [],
+  friends: [],
 
   searchByUserName: async (userName) => {
     try {
@@ -19,6 +20,7 @@ export const useFriendStore = create<friendState>((set, get) => ({
       set({ loading: false });
     }
   },
+
   addFriend: async (receiverId, message) => {
     try {
       set({ loading: true });
@@ -30,6 +32,18 @@ export const useFriendStore = create<friendState>((set, get) => ({
     } finally {
       set({ loading: false });
     }
+  },
+
+  addReceivedRequest: async (request) => {
+    set((state) => ({
+      receivedList: [request, ...state.receivedList],
+    }));
+  },
+
+  addSentRequest: async (request) => {
+    set((state) => ({
+      sentList: [request, ...state.sentList],
+    }));
   },
 
   getAllFriendRequests: async () => {
@@ -67,6 +81,45 @@ export const useFriendStore = create<friendState>((set, get) => ({
       set((state) => ({
         receivedList: state.receivedList.filter((r) => r._id !== requestId),
       }));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  removeSentRequest: async (requestId) => {
+    set((state) => ({
+      sentList: state.sentList.filter((s) => s._id !== requestId),
+    }));
+  },
+
+  removeReceivedRequest: async (requestId) => {
+    set((state) => ({
+      sentList: state.sentList.filter((s) => s._id !== requestId),
+    }));
+  },
+
+  unFriend: async (friendId) => {
+    try {
+      set({ loading: true });
+      const friend = await friendService.unFriend(friendId);
+      set((state) => ({
+        friends: state.friends.filter((f) => f._id !== friendId),
+      }));
+      return friend;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  getAllFriends: async () => {
+    try {
+      set({ loading: true });
+      const friends = await friendService.getAllFriends();
+      set({ friends: friends });
     } catch (error) {
       console.error(error);
     } finally {

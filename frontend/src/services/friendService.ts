@@ -42,4 +42,23 @@ export const friendService = {
       console.error(error);
     }
   },
+
+  async getAllFriends() {
+    try {
+      const res = await api.get("/friends/");
+      return res.data.friends;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  async unFriend(friendId: string) {
+    try {
+      const res = await api.delete(`/friends/${friendId}`);
+
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };

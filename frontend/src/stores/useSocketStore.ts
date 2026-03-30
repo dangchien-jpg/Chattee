@@ -3,6 +3,7 @@ import { io, type Socket } from "socket.io-client";
 import { useAuthStore } from "@/stores/useAuthStore";
 import type { SocketState } from "@/types/store";
 import { useChatStore } from "@/stores/useChatStore";
+import { useFriendStore } from "@/stores/useFriendStore";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -73,6 +74,29 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       };
 
       useChatStore.getState().updateConversation(updated);
+    });
+
+    // new group
+    socket.on("new-group", (conversation) => {
+      useChatStore.getState().addConversation(conversation);
+      socket.emit("join-conversation", conversation._id);
+    });
+
+    // new friend request
+    socket.on("new-friend-request", (request) => {
+      useFriendStore.getState().addReceivedRequest(request);
+    });
+
+    socket.on("friend-request-sent", (request) => {
+      useFriendStore.getState().addSentRequest(request);
+    });
+
+    socket.on("request-declined", (requestId) => {
+      useFriendStore.getState().removeSentRequest(requestId);
+    });
+
+    socket.on("request-accepted", (requestId) => {
+      useFriendStore.getState().removeReceivedRequest(requestId);
     });
   },
 

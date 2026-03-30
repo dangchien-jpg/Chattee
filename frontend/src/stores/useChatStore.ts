@@ -1,5 +1,6 @@
 import { chatService } from "@/services/chatService";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useSocketStore } from "@/stores/useSocketStore";
 import type { ChatState } from "@/types/store";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -196,6 +197,62 @@ export const useChatStore = create<ChatState>()(
           }));
         } catch (error) {
           console.error(error);
+        }
+      },
+
+      addConversation: (conversation) => {
+        set((state) => {
+          const exists = state.conversations.some(
+            (c) => c._id.toString() === conversation._id.toString(),
+          );
+
+          return {
+            conversations: exists
+              ? state.conversations
+              : [conversation, ...state.conversations],
+            activeConversationId: conversation._id,
+          };
+        });
+      },
+
+      createConversation: async (type, name, memberIds) => {
+        try {
+          const conversation = await chatService.createConversation(
+            type,
+            name,
+            memberIds,
+          );
+          get().addConversation(conversation);
+
+          useSocketStore
+            .getState()
+            .socket?.emit("join-conversation", conversation._id);
+
+          get().fetchMessages(conversation._id);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+
+      leaveGroup: async (conversationId) => {
+        try {
+          set({ loading: true });
+          const conversation = await chatService.leaveGroup(conversationId);
+          set((state) => {
+            const exists = state.conversations.some(
+              (c) => c._id.toString() === conversation._id.toString(),
+            );
+
+            return {
+              conversations: exists
+                ? state.conversations.filter((c) => c._id !== conversation._id)
+                : state.conversations,
+            };
+          });
+        } catch (error) {
+          console.error(error);
+        } finally {
+          set({ loading: false });
         }
       },
     }),

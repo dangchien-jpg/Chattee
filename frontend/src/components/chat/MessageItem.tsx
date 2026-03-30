@@ -21,12 +21,15 @@ const MessageItem = ({
 }: MessageItemProps) => {
   const prev = index + 1 < messages.length ? messages[index + 1] : undefined;
 
-  const isShowTime =
-    index === 0 ||
+  const timeDiff = Math.abs(
     new Date(message.createdAt).getTime() -
-      new Date(prev?.createdAt || 0).getTime() >
-      300000;
-  const isGroupBreak = isShowTime || message.senderId !== prev?.senderId;
+      new Date(prev?.createdAt || 0).getTime(),
+  );
+
+  const isShowTime = !prev || timeDiff > 300000;
+
+  const isGroupBreak =
+    !prev || message.senderId !== prev?.senderId || timeDiff > 300000;
 
   const participant = selectedConversation.participants.find(
     (p: Participant) => p._id.toString() === message.senderId.toString(),
@@ -87,7 +90,6 @@ const MessageItem = ({
             )}
         </div>
       </div>
-
       {isShowTime && (
         <span className="text-xs text-center text-muted-foreground px-1">
           {formatMessageTime(new Date(message.createdAt))}

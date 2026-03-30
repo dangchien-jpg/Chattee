@@ -25,10 +25,10 @@ export const socketAuthMiddleware = async (socket, next) => {
 
     next();
   } catch (error) {
-    if (err.name === "TokenExpiredError") {
+    if (error.name === "TokenExpiredError") {
       return next(new Error("TOKEN_EXPIRED"));
     }
-    console.error("Socket auth error:", err);
+    console.error("Socket auth error:", error);
     return next(new Error("AUTH_FAILED"));
   }
 };

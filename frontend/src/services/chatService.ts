@@ -54,4 +54,19 @@ export const chatService = {
 
     return res.data;
   },
+
+  async createConversation(
+    type: "direct" | "group",
+    name: string,
+    memberIds: string[],
+  ) {
+    const res = await api.post("/conversations", { type, name, memberIds });
+    return res.data.conversation;
+  },
+
+  async leaveGroup(conversationId: string) {
+    const res = await api.patch(`/conversations/${conversationId}/leave`);
+
+    return res.data.conversation;
+  },
 };

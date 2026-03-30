@@ -4,6 +4,7 @@ import UnreadCountBadge from "@/components/chat/UnreadCountBadge";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useChatStore } from "@/stores/useChatStore";
 import type { Conversation } from "@/types/chat";
+import { toast } from "sonner";
 
 const GroupCardChat = ({ conversation }: { conversation: Conversation }) => {
   const { user } = useAuthStore();
@@ -12,6 +13,7 @@ const GroupCardChat = ({ conversation }: { conversation: Conversation }) => {
     setActiveConversation,
     messages,
     fetchMessages,
+    leaveGroup,
   } = useChatStore();
 
   if (!user) return null;
@@ -24,10 +26,22 @@ const GroupCardChat = ({ conversation }: { conversation: Conversation }) => {
       await fetchMessages();
     }
   };
+
+  const handleLeaveGroup = async (conversationId: string) => {
+    try {
+      await leaveGroup(conversationId);
+      toast.success("Bạn đã rời khỏi nhóm này");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <ChatCard
       conversationId={conversation._id}
       name={name}
+      onLeave={() => handleLeaveGroup(conversation._id)}
+      type="group"
       timestamp={
         conversation.lastMessage?.createdAt
           ? new Date(conversation.lastMessage.createdAt)

@@ -42,6 +42,16 @@ const PersonalInfoForm = ({ userInfo }: Props) => {
     bio: userInfo?.bio || "",
   });
 
+  const isChanged =
+    JSON.stringify(formData) !==
+    JSON.stringify({
+      displayName: userInfo?.displayName || "",
+      userName: userInfo?.userName || "",
+      email: userInfo?.email || "",
+      phone: userInfo?.phone || "",
+      bio: userInfo?.bio || "",
+    });
+
   const handleChange = (key: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -106,7 +116,8 @@ const PersonalInfoForm = ({ userInfo }: Props) => {
 
         <Button
           onClick={handleSubmit}
-          className="w-full md:w-auto bg-gradient-primary hover:opacity-90 transition-opacity"
+          disabled={!isChanged}
+          className="w-full md:w-auto bg-gradient-primary hover:opacity-90 transition-opacity cursor-pointer"
         >
           Lưu thay đổi
         </Button>

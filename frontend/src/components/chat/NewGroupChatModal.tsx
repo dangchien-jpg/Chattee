@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const NewGroupChatModal = () => {
   const [groupName, setGroupName] = useState("");
   const [search, setSearch] = useState("");
-  const { friends, getAllFriends } = useFriendStore();
+  const { friends = [], getAllFriends } = useFriendStore();
   const [inviteUsers, setInviteUsers] = useState<Friend[]>([]);
   const { loading, createConversation } = useChatStore();
 

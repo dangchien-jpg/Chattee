@@ -43,6 +43,7 @@ export const useUserStore = create<UserState>((set, get) => ({
           displayName: data.displayName,
           email: data.email,
           phone: data.phone,
+          bio: data.bio,
         });
       }
     } catch (error) {

@@ -218,7 +218,13 @@ export const unfriend = async (req, res) => {
       return res.status(404).json({ message: "Friendship Not found" });
     }
 
+    const userA = friend.userA.toString();
+    const userB = friend.userB.toString();
+
     await friend.deleteOne();
+
+    io.to(userA).emit("unfriend", { userId: userB });
+    io.to(userB).emit("unfriend", { userId: userA });
 
     return res.status(200).json({ message: "Unfriend success" });
   } catch (error) {

@@ -8,6 +8,12 @@ export const useFriendStore = create<friendState>((set, get) => ({
   sentList: [],
   friends: [],
 
+  removeFriend: (friendId) => {
+    set((state) => ({
+      friends: state.friends.filter((f) => f._id !== friendId),
+    }));
+  },
+
   searchByUserName: async (userName) => {
     try {
       set({ loading: true });

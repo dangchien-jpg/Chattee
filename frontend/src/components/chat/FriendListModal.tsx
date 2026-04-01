@@ -22,11 +22,15 @@ const FriendListModal = ({
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { friends } = useFriendStore();
+  const { friends, loading } = useFriendStore();
   const { createConversation } = useChatStore();
   const { unFriend } = useFriendStore();
 
-  if (friends.length === 0) {
+  if (loading) {
+    <div>loading...</div>;
+  }
+
+  if (!friends || friends.length === 0) {
     return (
       <DialogContent className="text-center py-8 text-muted-foreground">
         <Users className="size-12 mx-auto mb-3 opacity-50" />

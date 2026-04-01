@@ -1,10 +1,12 @@
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useFriendStore } from "@/stores/useFriendStore";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoute = () => {
   const { accessToken, user, loading, refresh, fetchMe } = useAuthStore();
+  const { getAllFriends } = useFriendStore();
   const [starting, setStarting] = useState(true);
 
   useEffect(() => {
@@ -16,6 +18,10 @@ const ProtectedRoute = () => {
 
       if (accessToken && !user) {
         await fetchMe();
+      }
+
+      if (user) {
+        await getAllFriends();
       }
 
       setStarting(false);

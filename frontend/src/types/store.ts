@@ -91,6 +91,7 @@ export interface friendState {
   addSentRequest: (request: FriendRequest) => void;
   removeSentRequest: (requestId: string) => void;
   removeReceivedRequest: (requestId: string) => void;
+  removeFriend: (friendId: string) => void;
 }
 
 export interface UserState {

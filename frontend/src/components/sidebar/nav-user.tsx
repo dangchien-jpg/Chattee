@@ -51,7 +51,7 @@ export function NavUser({ user }: { user: User }) {
                     <span className="truncate font-semibold">
                       {user.displayName}
                     </span>
-                    <span className="truncate text-xs">{user.userName}</span>
+                    <span className="truncate text-xs">@{user.userName}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>

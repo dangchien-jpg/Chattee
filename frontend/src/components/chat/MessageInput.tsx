@@ -7,6 +7,7 @@ import type { Conversation } from "@/types/chat";
 import { ImagePlus, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useFriendStore } from "@/stores/useFriendStore";
 
 const MessageInput = ({
   selectedConversation,
@@ -16,7 +17,22 @@ const MessageInput = ({
   const { user } = useAuthStore();
   const [value, setValue] = useState("");
   const { sendDirectMessage, sendGroupMessage } = useChatStore();
+  const { friends = [] } = useFriendStore();
+  const { activeConversationId, conversations } = useChatStore();
+
   if (!user) return;
+
+  const activeConversation = conversations.find(
+    (c) => c._id.toString() === activeConversationId?.toString(),
+  );
+
+  const otherUser = activeConversation?.participants.find(
+    (p) => p._id.toString() !== user?._id.toString(),
+  )?._id;
+
+  const isFriend = friends.some(
+    (f) => f._id.toString() === otherUser?.toString(),
+  );
 
   const sendMessage = async () => {
     if (!value.trim()) return;
@@ -48,6 +64,16 @@ const MessageInput = ({
       sendMessage();
     }
   };
+
+  if (!isFriend) {
+    return (
+      <Input
+        disabled
+        className="border-none text-center"
+        placeholder="Bạn chưa kết bạn với người này.Hãy kết bạn để tiếp tục trò chuyện."
+      />
+    );
+  }
 
   return (
     <div className="flex items-center gap-2 p-3 m-h-[56px] bg-background">

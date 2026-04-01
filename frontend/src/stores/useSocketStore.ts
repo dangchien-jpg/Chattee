@@ -98,6 +98,10 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     socket.on("request-accepted", (requestId) => {
       useFriendStore.getState().removeReceivedRequest(requestId);
     });
+
+    socket.on("unfriend", ({ userId }) => {
+      useFriendStore.getState().removeFriend(userId);
+    });
   },
 
   disconnectSocket: () => {

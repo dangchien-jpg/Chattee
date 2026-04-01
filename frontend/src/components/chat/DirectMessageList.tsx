@@ -3,11 +3,11 @@ import { useChatStore } from "@/stores/useChatStore";
 
 const DirectMessageList = () => {
   const { conversations } = useChatStore();
-
   if (!conversations) return;
 
   const directConversations = conversations.filter(
-    (conversation) => conversation.type === "direct",
+    (conversation) =>
+      conversation.type === "direct" && conversation.lastMessage !== null,
   );
 
   return (

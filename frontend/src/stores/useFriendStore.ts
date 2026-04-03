@@ -7,6 +7,17 @@ export const useFriendStore = create<friendState>((set, get) => ({
   receivedList: [],
   sentList: [],
   friends: [],
+  notificationCount: 0,
+
+  increaseNotificationCount: () => {
+    set((state) => ({
+      notificationCount: state.notificationCount + 1,
+    }));
+  },
+
+  resetNotificationCount: () => {
+    set({ notificationCount: 0 });
+  },
 
   removeFriend: (friendId) => {
     set((state) => ({

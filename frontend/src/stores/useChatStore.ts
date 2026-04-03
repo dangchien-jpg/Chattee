@@ -84,19 +84,24 @@ export const useChatStore = create<ChatState>()(
         }
       },
 
-      sendDirectMessage: async (receiverId, content, imgUrl) => {
+      sendDirectMessage: async (
+        receiverId,
+        content,
+        conversationId,
+        imgUrl,
+      ) => {
         try {
-          const { activeConversationId } = get();
+          conversationId = get().activeConversationId;
           await chatService.sendDirectMessage(
             receiverId,
             content,
+            conversationId || undefined,
             imgUrl,
-            activeConversationId || undefined,
           );
 
           set((state) => ({
             conversations: state.conversations.map((c) =>
-              c._id === activeConversationId ? { ...c, seenBy: [] } : c,
+              c._id === conversationId ? { ...c, seenBy: [] } : c,
             ),
           }));
         } catch (error) {

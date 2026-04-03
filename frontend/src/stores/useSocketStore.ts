@@ -40,6 +40,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       const lastMessage = {
         _id: conversation.lastMessage._id,
         content: conversation.lastMessage.content,
+        imgUrl: conversation.lastMessage.imgUrl,
         createdAt: conversation.lastMessage.createdAt,
         sender: {
           _id: conversation.lastMessage.senderId,
@@ -84,6 +85,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
     // new friend request
     socket.on("new-friend-request", (request) => {
+      useFriendStore.getState().increaseNotificationCount();
       useFriendStore.getState().addReceivedRequest(request);
     });
 

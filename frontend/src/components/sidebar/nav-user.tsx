@@ -24,11 +24,14 @@ import Logout from "@/components/auth/Logout";
 import { useState } from "react";
 import FriendRequestDialog from "@/components/friendRequest/FriendRequestDialog";
 import ProfileDialog from "@/components/profile/ProfileDialog";
+import { useFriendStore } from "@/stores/useFriendStore";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
   const [friendRequestOpen, setFriendRequestOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const notificationCount = useFriendStore((n) => n.notificationCount);
+  const { resetNotificationCount } = useFriendStore();
 
   return (
     <>
@@ -86,12 +89,24 @@ export function NavUser({ user }: { user: User }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => setProfileOpen(true)}>
-                    <UserIcon className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
+                    <UserIcon className="size-6 text-muted-foreground dark:group-focus:!text-accent-foreground" />
                     Tài khoản
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFriendRequestOpen(true)}>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setFriendRequestOpen(true);
+                      resetNotificationCount();
+                    }}
+                  >
                     <Bell className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
                     Thông báo
+                    {notificationCount > 0 && (
+                      <div className="absolute z-20 -top-1 left-4 rounded-full bg-gradient-chat px-1 ring ring-white">
+                        <span className="flex items-center text-[10px] text-white ">
+                          {notificationCount > 9 ? "9+" : notificationCount}
+                        </span>
+                      </div>
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

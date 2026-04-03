@@ -8,11 +8,13 @@ import { io } from "../socket/index.js";
 
 export const sendDirectMessage = async (req, res) => {
   try {
-    const { receiverId, content, conversationId } = req.body;
+    const { receiverId, content, conversationId, imgUrl } = req.body;
     const senderId = req.user._id;
     let conversation;
-    if (!content) {
-      return res.status(400).json({ message: "Content can not blank" });
+    if (!content && !imgUrl) {
+      return res
+        .status(400)
+        .json({ message: "Content or ImgUrl can not blank" });
     }
 
     if (conversationId) {
@@ -35,6 +37,7 @@ export const sendDirectMessage = async (req, res) => {
       conversationId: conversation._id,
       senderId,
       content,
+      imgUrl,
     });
 
     updateConversationAfterCreateMessage(conversation, message, senderId);

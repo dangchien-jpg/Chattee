@@ -61,18 +61,28 @@ const MessageItem = ({
             message.isOwn ? "items-end" : "items-start",
           )}
         >
-          <Card
-            className={cn(
-              "p-3",
-              message.isOwn
-                ? "bg-gradient-chat text-white"
-                : "bg-chat-bubble-received",
-            )}
-          >
-            <p className="text-sm leading-relaxed break-words">
-              {message.content}
-            </p>
-          </Card>
+          {message.content && (
+            <Card
+              className={cn(
+                "p-3",
+                message.isOwn
+                  ? "bg-gradient-chat text-white"
+                  : "bg-chat-bubble-received",
+              )}
+            >
+              <p className="text-sm leading-relaxed break-words">
+                {message.content}
+              </p>
+            </Card>
+          )}
+
+          {message.imgUrl && (
+            <img
+              src={message.imgUrl}
+              alt="image"
+              className="rounded-xl max-w-full max-h-60 object-cover"
+            />
+          )}
 
           {message.isOwn &&
             message._id === selectedConversation.lastMessage?._id && (

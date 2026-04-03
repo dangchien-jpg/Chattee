@@ -24,6 +24,7 @@ const ChatWindowBody = () => {
 
   const messages = allMessages[activeConversationId!]?.items ?? [];
   const reversedMessages = [...messages].reverse();
+
   const hasMore = allMessages[activeConversationId!]?.hasMore ?? false;
   const selectedConversation = conversations.find(
     (c) => c._id === activeConversationId,

@@ -49,6 +49,7 @@ export interface ChatState {
   sendDirectMessage: (
     receiverId: string,
     content: string,
+    conversationId: string | null,
     imgUrl?: string,
   ) => Promise<void>;
   sendGroupMessage: (
@@ -80,6 +81,9 @@ export interface friendState {
   friends: Friend[];
   receivedList: FriendRequest[];
   sentList: FriendRequest[];
+  notificationCount: number;
+  increaseNotificationCount: () => void;
+  resetNotificationCount: () => void;
   searchByUserName: (userName: string) => Promise<User | null>;
   addFriend: (receiverId: string, message?: string) => Promise<string>;
   getAllFriendRequests: () => Promise<void>;

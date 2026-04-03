@@ -24,7 +24,7 @@ export const chatService = {
 
   async sendDirectMessage(
     receiverId: string,
-    content: string = "",
+    content: string,
     conversationId?: string,
     imgUrl?: string,
   ) {

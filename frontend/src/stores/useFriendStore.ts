@@ -44,8 +44,8 @@ export const useFriendStore = create<friendState>((set, get) => ({
       const result = await friendService.sendFriendRequest(receiverId, message);
       return result;
     } catch (error) {
-      console.error(error);
-      throw error?.response?.data?.message || "Có lỗi xảy ra";
+      console.error("Lỗi khi gửi lời mời:", error);
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -113,7 +113,7 @@ export const useFriendStore = create<friendState>((set, get) => ({
 
   removeReceivedRequest: async (requestId) => {
     set((state) => ({
-      sentList: state.sentList.filter((s) => s._id !== requestId),
+      receivedList: state.receivedList.filter((s) => s._id !== requestId),
     }));
   },
 
@@ -139,6 +139,21 @@ export const useFriendStore = create<friendState>((set, get) => ({
       set({ friends: friends });
     } catch (error) {
       console.error(error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  cancelSentFriendRequest: async (requestId) => {
+    try {
+      set({ loading: true });
+      await friendService.cancelSentFriendRequest(requestId);
+      set((state) => ({
+        sentList: state.sentList.filter((r) => r._id !== requestId),
+      }));
+    } catch (error) {
+      console.error("Lỗi khi hủy yêu cầu: ", error);
+      throw error;
     } finally {
       set({ loading: false });
     }

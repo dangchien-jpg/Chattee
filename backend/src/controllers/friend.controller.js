@@ -149,6 +149,35 @@ export const declineFriendRequest = async (req, res) => {
   }
 };
 
+export const cancelSentFriendRequest = async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    const userId = req.user._id;
+
+    const request = await friendRequestModel.findById(requestId);
+    if (!request) {
+      return res.status(404).json({ message: "Friend request not found" });
+    }
+
+    if (request.senderId.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You are not allowed to remove this request" });
+    }
+
+    await friendRequestModel.findByIdAndDelete(requestId);
+
+    const receiver = request.receiverId;
+    io.to(receiver.toString()).emit("cancel-sent-request", requestId);
+
+    return res
+      .status(200)
+      .json({ message: "Sent friend request remove successfully " });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 export const getAllFriends = async (req, res) => {
   try {
     const userId = req.user._id;

@@ -1,8 +1,10 @@
+import ImageViewer from "@/components/chat/ImageViewer";
 import UserAvatar from "@/components/chat/UserAvatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cn, formatMessageTime } from "@/lib/utils";
 import type { Conversation, Message, Participant } from "@/types/chat";
+import { useState } from "react";
 
 interface MessageItemProps {
   message: Message;
@@ -19,6 +21,7 @@ const MessageItem = ({
   selectedConversation,
   lastMessageStatus,
 }: MessageItemProps) => {
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
   const prev = index + 1 < messages.length ? messages[index + 1] : undefined;
 
   const timeDiff = Math.abs(
@@ -77,11 +80,20 @@ const MessageItem = ({
           )}
 
           {message.imgUrl && (
-            <img
-              src={message.imgUrl}
-              alt="image"
-              className="rounded-xl max-w-full max-h-60 object-cover"
-            />
+            <>
+              <img
+                src={message.imgUrl}
+                alt="image"
+                className="rounded-xl max-w-full max-h-60 object-cover"
+                onClick={() => setPreviewImg(message.imgUrl ?? null)}
+              />
+              {previewImg && (
+                <ImageViewer
+                  src={previewImg}
+                  onClose={() => setPreviewImg(null)}
+                />
+              )}
+            </>
           )}
 
           {message.isOwn &&

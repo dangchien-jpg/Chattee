@@ -96,6 +96,7 @@ export interface friendState {
   removeSentRequest: (requestId: string) => void;
   removeReceivedRequest: (requestId: string) => void;
   removeFriend: (friendId: string) => void;
+  cancelSentFriendRequest: (requestId: string) => Promise<void>;
 }
 
 export interface UserState {

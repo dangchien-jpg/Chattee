@@ -9,6 +9,9 @@ import { ImagePlus, Send } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useFriendStore } from "@/stores/useFriendStore";
+import { apiCloud } from "@/lib/uploads";
+
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
 const MessageInput = ({
   selectedConversation,
@@ -74,15 +77,9 @@ const MessageInput = ({
     formData.append("file", file);
     formData.append("upload_preset", "chat_upload");
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dr5jrwvfd/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const res = await apiCloud.post(`/${CLOUD_NAME}/image/upload`, formData);
 
-    const data = await res.json();
+    const data = res.data;
     return data.secure_url as string;
   };
 

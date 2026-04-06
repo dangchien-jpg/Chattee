@@ -60,12 +60,12 @@ const AddFriendModal = () => {
     if (!searchUser) return;
 
     try {
-      const message = await addFriend(searchUser._id, data.message.trim());
-      toast.success(message);
+      await addFriend(searchUser._id, data.message.trim());
+      toast.success("Đã gửi yêu cầu kết bạn");
       handleCancel();
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error);
+      toast.error("Yêu cầu đã được gửi hoặc đang chờ trả lời");
     }
   });
 

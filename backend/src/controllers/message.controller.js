@@ -54,18 +54,21 @@ export const sendDirectMessage = async (req, res) => {
 
 export const sendGroupMessage = async (req, res) => {
   try {
-    const { conversationId, content } = req.body;
+    const { conversationId, content, imgUrl } = req.body;
     const senderId = req.user._id;
     const conversation = req.conversation;
 
-    if (!content) {
-      return res.status(400).json({ message: "Content cannot blank" });
+    if (!content && !imgUrl) {
+      return res
+        .status(400)
+        .json({ message: "Content or ImgUrl can not blank" });
     }
 
     const message = await messageModel.create({
       conversationId,
       senderId,
       content,
+      imgUrl,
     });
 
     updateConversationAfterCreateMessage(conversation, message, senderId);

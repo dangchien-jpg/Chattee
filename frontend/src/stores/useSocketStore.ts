@@ -98,6 +98,10 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     });
 
     socket.on("request-accepted", (requestId) => {
+      useFriendStore.getState().removeSentRequest(requestId);
+    });
+
+    socket.on("cancel-sent-request", (requestId) => {
       useFriendStore.getState().removeReceivedRequest(requestId);
     });
 

@@ -61,4 +61,13 @@ export const friendService = {
       console.error(error);
     }
   },
+
+  async cancelSentFriendRequest(requestId: string) {
+    try {
+      const res = await api.delete(`/friends/requests/${requestId}/cancel`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

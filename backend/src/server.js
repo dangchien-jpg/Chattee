@@ -18,8 +18,8 @@ const PORT = process.env.PORT || 5001;
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-
+app.use(cors({ origin: process.env.CLIENT_URL?.trim(), credentials: true }));
+console.log(process.env.CLIENT_URL?.trim());
 // Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

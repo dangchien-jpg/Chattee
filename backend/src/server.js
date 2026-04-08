@@ -14,7 +14,7 @@ import { app, server } from "./socket/index.js";
 import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5001;
 // middlewares
 app.use(express.json());
 app.use(cookieParser());

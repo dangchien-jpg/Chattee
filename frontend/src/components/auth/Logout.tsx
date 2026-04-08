@@ -11,7 +11,7 @@ const Logout = () => {
     navigate("/signin");
   };
   return (
-    <Button variant="completeGhost" onClick={handleLogout}>
+    <Button className="p-0" variant="completeGhost" onClick={handleLogout}>
       <LogOut className="text-destructive" />
       <span className="text-destructive">Đăng xuất</span>
     </Button>

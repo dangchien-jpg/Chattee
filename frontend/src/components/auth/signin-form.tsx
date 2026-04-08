@@ -10,8 +10,8 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { toast } from "sonner";
 
 const signInSchema = z.object({
-  userName: z.string().min(1, "Username cannot be blank"),
-  password: z.string().min(1, "Password cannot be blank"),
+  userName: z.string().min(1, "Tên đăng nhập không thể trống"),
+  password: z.string().min(1, "Mật khẩu không thể trống"),
 });
 type SignInFormValues = z.infer<typeof signInSchema>;
 
@@ -46,18 +46,20 @@ export function SignInForm({
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center gap-2">
                 <a href="/" className="mx-auto block w-fit text-center">
-                  <img src="/logo.svg" alt="logo" />
+                  <img src="/logo.svg" alt="logo" className="w-[100px]" />
                 </a>
 
-                <h1 className="text-2xl font-bold">Welcome back!</h1>
+                <h1 className="text-xl font-bold">
+                  Chào mừng bạn quay trở lại
+                </h1>
                 <p className="text-muted-foreground text-balance">
-                  Sign in to get started
+                  Đăng nhập để bắt đầu!
                 </p>
               </div>
               {/* userName */}
               <div className="flex flex-col gap-3">
                 <Label htmlFor="userName" className="block text-sm">
-                  Username
+                  Tên đăng nhập
                 </Label>
                 <Input type="text" id="userName" {...register("userName")} />
                 {errors.userName && (
@@ -69,7 +71,7 @@ export function SignInForm({
               {/* password */}
               <div className="flex flex-col gap-3">
                 <Label htmlFor="password" className="block text-sm">
-                  Password
+                  Mật khẩu
                 </Label>
                 <Input
                   type="password"
@@ -89,30 +91,26 @@ export function SignInForm({
                 className="w-full cursor-pointer"
                 disabled={isSubmitting}
               >
-                Sign in
+                Đăng nhập
               </Button>
 
               <div className="text-center text-sm">
-                New to Chattee? {""}
+                Mới vào Chattee? {""}
                 <a href="/signup" className="underline underline-offset-4">
-                  Create an account
+                  Tạo tài khoản
                 </a>
               </div>
             </div>
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholderSignUp.png"
+              src="/Signin-amico.png"
               alt="Image"
               className="absolute top-1/2 -translate-y-1/2"
             />
           </div>
         </CardContent>
       </Card>
-      <div className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }

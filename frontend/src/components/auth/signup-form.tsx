@@ -10,11 +10,11 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
 
 const signUpSchema = z.object({
-  firstName: z.string().min(1, "First Name cannot be blank"),
-  lastName: z.string().min(1, "Last Name cannot be blank"),
-  userName: z.string().min(3, "Username must be  at least 3 characters long"),
-  email: z.email("Email is invalid or already taken"),
-  password: z.string().min(6, "Password must be  at least 6 characters long"),
+  firstName: z.string().min(1, "Tên không thể để trống"),
+  lastName: z.string().min(1, "Họ không thể để trống"),
+  userName: z.string().min(3, "Tên đăng nhập phải tối thiểu 3 ký tự"),
+  email: z.email("Email không đúng định dạng hoặc đã tồn tại"),
+  password: z.string().min(6, "Mật khẩu phải tối thiểu 6 ký tự"),
 });
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
@@ -45,22 +45,17 @@ export function SignupForm({
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center gap-2">
                 <a href="/" className="mx-auto block w-fit text-center">
-                  <img src="/logo.svg" alt="logo" />
+                  <img src="/logo.svg" alt="logo" className="w-[100px]" />
                 </a>
 
-                <h1 className="text-2xl font-bold">
-                  Create your Chattee account
-                </h1>
-                <p className="text-muted-foreground text-balance">
-                  Welcome! Sign up to get started!
-                </p>
+                <h1 className="text-2xl font-bold">Tạo tài khoản Chattee</h1>
               </div>
 
               {/* firstName , lastName */}
               <div className="flex flex-col gap-6 md:grid md:grid-cols-2 md:gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="lastName" className="block text-sm">
-                    Last Name
+                    Họ
                   </Label>
                   <Input type="text" id="lastName" {...register("lastName")} />
                   {errors.lastName && (
@@ -72,7 +67,7 @@ export function SignupForm({
 
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="block text-sm">
-                    First Name
+                    Tên
                   </Label>
                   <Input
                     type="text"
@@ -90,7 +85,7 @@ export function SignupForm({
               {/* userName */}
               <div className="flex flex-col gap-3">
                 <Label htmlFor="userName" className="block text-sm">
-                  Username
+                  Tên đăng nhập
                 </Label>
                 <Input
                   type="text"
@@ -126,7 +121,7 @@ export function SignupForm({
               {/* password */}
               <div className="flex flex-col gap-3">
                 <Label htmlFor="password" className="block text-sm">
-                  Password
+                  Mật khẩu
                 </Label>
                 <Input type="text" id="password" {...register("password")} />
                 {errors.password && (
@@ -142,30 +137,26 @@ export function SignupForm({
                 className="w-full cursor-pointer"
                 disabled={isSubmitting}
               >
-                Create account
+                Tạo tài khoản
               </Button>
 
               <div className="text-center text-sm">
-                Already have an account? {""}
+                Đã có tài khoản?
                 <a href="/signin" className="underline underline-offset-4">
-                  Sign in
+                  Đăng nhập
                 </a>
               </div>
             </div>
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholderSignUp.png"
+              src="/Signup-amico.png"
               alt="Image"
               className="absolute top-1/2 -translate-y-1/2"
             />
           </div>
         </CardContent>
       </Card>
-      <div className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="/signin">Privacy Policy</a>.
-      </div>
     </div>
   );
 }

@@ -70,7 +70,7 @@ const SearchForm = ({
         <Button
           type="submit"
           disabled={loading || !userNameValue?.trim()}
-          className="flex-1 bg-gradient-chat text-white hover:opacity-90 transition-smooth cursor-pointer"
+          className="flex-1 bg-gradient-chat text-white hover:opacity-90 transition-smooth cursor-pointer mb-2 md:mb-0"
         >
           {loading ? (
             <span>Đang tìm...</span>

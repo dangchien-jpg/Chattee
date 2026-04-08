@@ -42,7 +42,7 @@ export function NavUser({ user }: { user: User }) {
               <div className="w-full">
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  className="border-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src={user.avatarUrl} alt={user.displayName} />
@@ -108,11 +108,12 @@ export function NavUser({ user }: { user: User }) {
                       </div>
                     )}
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem>
+                    <Logout />
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
-                  <Logout />
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenuPortal>
           </DropdownMenu>

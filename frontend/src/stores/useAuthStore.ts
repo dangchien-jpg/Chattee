@@ -37,10 +37,10 @@ export const useAuthStore = create<AuthState>()(
             firstName,
             lastName,
           );
-          toast.success("Sign up successful");
+          toast.success("Đăng ký tài khoản thành công");
         } catch (error) {
           console.error(error);
-          toast.error("Sign up failed");
+          toast.error("Có lỗi xảy ra khi đăng ký tài khoản");
         } finally {
           set({ loading: false });
         }
@@ -66,10 +66,9 @@ export const useAuthStore = create<AuthState>()(
         try {
           get().clearState();
           await authService.signOut();
-          toast.success("Sign out successful");
         } catch (error) {
           console.error(error);
-          toast.error("Sign out failed");
+          toast.error("Có lỗi xảy ra khi đăng xuất");
         }
       },
 
@@ -81,7 +80,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error(error);
           set({ user: null, accessToken: null });
-          toast.error("An error occurred. Please try again");
+          toast.error("Có lỗi xảy ra. Hãy thử lại!");
         } finally {
           set({ loading: false });
         }

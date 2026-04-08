@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="flex h-screen w-full md:p-6">
+      <div className="flex h-screen w-full md:p-4">
         <ChatWindowLayout />
       </div>
     </SidebarProvider>

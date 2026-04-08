@@ -53,7 +53,7 @@ const SendFriendRequestForm = ({
           <Button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-gradient-chat hover:opacity-90 text-white cursor-pointer"
+            className="flex-1 bg-gradient-chat hover:opacity-90 text-white cursor-pointer mb-2 md:mb-0"
           >
             {loading ? (
               <span>Đang gửi</span>

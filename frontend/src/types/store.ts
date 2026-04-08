@@ -109,3 +109,10 @@ export interface UserState {
     bio?: string,
   ) => Promise<void>;
 }
+
+export interface AdminState {
+  Users: User[];
+  loading: boolean;
+  getAllUsers: () => Promise<void>;
+  blockUser: (userId: string) => Promise<void>;
+}

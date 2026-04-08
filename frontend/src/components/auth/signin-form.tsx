@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const signInSchema = z.object({
   userName: z.string().min(1, "Username cannot be blank"),
@@ -19,8 +19,8 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const navigate = useNavigate();
   const { signIn } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -29,10 +29,15 @@ export function SignInForm({
     resolver: zodResolver(signInSchema),
   });
   const onSubmit = async (data: SignInFormValues) => {
-    const { userName, password } = data;
-    await signIn(userName, password);
-    navigate("/");
+    try {
+      const { userName, password } = data;
+      await signIn(userName, password);
+    } catch (error) {
+      console.error("Lỗi khi đăng nhập: ", error);
+      toast.error("Tên đăng nhập hoặc mật khẩu không đúng");
+    }
   };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">

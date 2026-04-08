@@ -36,6 +36,7 @@ const ProtectedRoute = () => {
       </div>
     );
   }
+
   if (!accessToken) {
     return <Navigate to={"/signin"} replace />;
   }

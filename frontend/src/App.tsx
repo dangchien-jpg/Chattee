@@ -8,6 +8,9 @@ import { useThemeStore } from "@/stores/useThemeStore";
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
+import DashboardPage from "@/pages/DashboardPage";
+import { AdminRoute } from "@/components/auth/AdminRoute";
+import DisablePage from "@/pages/DisablePage";
 
 function App() {
   const { isDark, setTheme } = useThemeStore();
@@ -25,6 +28,7 @@ function App() {
 
     return () => disconnectSocket();
   }, [accessToken]);
+
   return (
     <>
       <Toaster richColors />
@@ -37,6 +41,13 @@ function App() {
           {/* private routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<ChatAppPage />} />
+            <Route path="/disable" element={<DisablePage />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AdminRoute />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

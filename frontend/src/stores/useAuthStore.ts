@@ -54,10 +54,9 @@ export const useAuthStore = create<AuthState>()(
           get().setAccessToken(accessToken);
           await get().fetchMe();
           useChatStore.getState().fetchConversations();
-          toast.success("Sign in successful");
         } catch (error) {
           console.error(error);
-          toast.error("Username or password incorrect");
+          throw error;
         } finally {
           set({ loading: false });
         }

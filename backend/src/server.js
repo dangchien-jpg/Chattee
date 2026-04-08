@@ -7,6 +7,7 @@ import userRoute from "../src/routes/user.route.js";
 import friendRoute from "../src/routes/friend.route.js";
 import messageRoute from "../src/routes/message.route.js";
 import conversationRoute from "../src/routes/conversation.route.js";
+import adminRoute from "../src/routes/admin.route.js";
 import { connectDb } from "./configs/db.config.js";
 import { protectedRoute } from "./middlewares/auth.middleware.js";
 import { app, server } from "./socket/index.js";
@@ -35,6 +36,7 @@ app.use("/api/users", userRoute);
 app.use("/api/friends", friendRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/conversations", conversationRoute);
+app.use("/api/admin", adminRoute);
 
 connectDb().then(() => {
   server.listen(PORT, () => {

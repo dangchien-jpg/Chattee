@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL?.trim(),
     credentials: true,
   },
 });
@@ -22,7 +22,7 @@ const onlineUsers = new Map();
 io.on("connection", async (socket) => {
   const user = socket.user;
 
-  onlineUsers.set(user._id, socket._id);
+  onlineUsers.set(user._id, socket.id);
 
   io.emit("online-users", Array.from(onlineUsers.keys()));
 

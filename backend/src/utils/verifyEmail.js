@@ -49,7 +49,7 @@ export const sendVerifyEmail = async (token, email) => {
     const info = await transporter.sendMail(mailConfig);
     return true;
   } catch (error) {
-    console.error("=Send email error:", error);
+    console.error("Send email error:", error);
     return false;
   }
 };

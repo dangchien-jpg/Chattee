@@ -11,6 +11,8 @@ import { useSocketStore } from "@/stores/useSocketStore";
 import DashboardPage from "@/pages/DashboardPage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import DisablePage from "@/pages/DisablePage";
+import VerifyMailPage from "@/pages/VerifyMailPage";
+import ForgotPassword from "@/pages/ForgotPassword";
 
 function App() {
   const { isDark, setTheme } = useThemeStore();
@@ -31,12 +33,14 @@ function App() {
 
   return (
     <>
-      <Toaster richColors />
+      <Toaster richColors position="top-right" />
       <BrowserRouter>
         <Routes>
           {/* public routes */}
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/auth/verify-email" element={<VerifyMailPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* private routes */}
           <Route element={<ProtectedRoute />}>

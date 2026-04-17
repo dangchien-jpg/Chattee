@@ -44,4 +44,34 @@ export const authService = {
     const res = await api.post("/auth/refresh", { withCredentials: true });
     return res.data.accessToken;
   },
+
+  verifyEmail: async (token: string) => {
+    const res = await api.get(`/auth/verify-email?token=${token}`);
+
+    return res.data;
+  },
+
+  resendEmail: async (email: string) => {
+    const res = await api.post("/auth/resend-email", { email });
+    return res.data;
+  },
+
+  forgotPassword: async (email: string) => {
+    const res = await api.post("/auth/forgot-password", { email });
+    return res.data;
+  },
+
+  resendOTP: async (email: string) => {
+    const res = await api.post("/auth/resend-otp", { email });
+    return res.data;
+  },
+
+  resetPassword: async (email: string, newPassword: string, otp: string) => {
+    const res = await api.patch("/auth/reset-password", {
+      email,
+      newPassword,
+      otp,
+    });
+    return res.data;
+  },
 };

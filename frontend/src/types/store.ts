@@ -20,6 +20,15 @@ export interface AuthState {
   signIn: (userName: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
+  verifyEmail: (token: string) => Promise<void>;
+  resendEmail: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resendOTP: (email: string) => Promise<void>;
+  resetPassword: (
+    email: string,
+    newPassword: string,
+    otp: string,
+  ) => Promise<void>;
 }
 
 export interface ThemeState {

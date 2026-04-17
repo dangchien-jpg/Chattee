@@ -8,6 +8,11 @@ export interface User {
   phone?: string;
   role: string;
   status: string;
+  isVerified: boolean;
+  verifyToken?: string;
+  verifyTokenExpires?: string;
+  resetOTP?: string;
+  resetOTPExpires?: string;
   createdAt?: string;
   updatedAt?: string;
 }

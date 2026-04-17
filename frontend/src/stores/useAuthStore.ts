@@ -37,7 +37,6 @@ export const useAuthStore = create<AuthState>()(
             firstName,
             lastName,
           );
-          toast.success("Đăng ký tài khoản thành công");
         } catch (error) {
           console.error(error);
           toast.error("Có lỗi xảy ra khi đăng ký tài khoản");
@@ -98,6 +97,71 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error(error);
           get().clearState();
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      verifyEmail: async (token) => {
+        try {
+          set({ loading: true });
+          const res = await authService.verifyEmail(token);
+          return res;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      resendEmail: async (email) => {
+        try {
+          set({ loading: true });
+          const res = await authService.resendEmail(email);
+          return res;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      forgotPassword: async (email) => {
+        try {
+          set({ loading: true });
+          const res = await authService.forgotPassword(email);
+          return res;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      resendOTP: async (email) => {
+        try {
+          set({ loading: true });
+          const res = await authService.resendOTP(email);
+          return res;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      resetPassword: async (email, newPassword, otp) => {
+        try {
+          set({ loading: true });
+          const res = await authService.resetPassword(email, newPassword, otp);
+          return res;
+        } catch (error) {
+          console.error(error);
+          throw error;
         } finally {
           set({ loading: false });
         }

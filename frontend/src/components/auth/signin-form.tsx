@@ -8,6 +8,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const signInSchema = z.object({
   userName: z.string().min(1, "Tên đăng nhập không thể trống"),
@@ -20,6 +23,8 @@ export function SignInForm({
   ...props
 }: React.ComponentProps<"div">) {
   const { signIn } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,8 +37,15 @@ export function SignInForm({
     try {
       const { userName, password } = data;
       await signIn(userName, password);
-    } catch (error) {
-      console.error("Lỗi khi đăng nhập: ", error);
+    } catch (error: any) {
+      if (error.response?.data?.code === "EMAIL_NOT_VERIFIED") {
+        toast.warning(
+          "Tài khoản chưa được xác minh. Vui lòng kiểm tra email để hoàn tất đăng ký.",
+        );
+        navigate("/auth/verify-email");
+        return;
+      }
+
       toast.error("Tên đăng nhập hoặc mật khẩu không đúng");
     }
   };
@@ -69,12 +81,12 @@ export function SignInForm({
                 )}
               </div>
               {/* password */}
-              <div className="flex flex-col gap-3">
+              <div className="relative flex flex-col gap-3">
                 <Label htmlFor="password" className="block text-sm">
                   Mật khẩu
                 </Label>
                 <Input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   {...register("password")}
                 />
@@ -83,6 +95,31 @@ export function SignInForm({
                     {errors.password.message}
                   </p>
                 )}
+                <div className="absolute right-3 top-1/2 translate-y-1/2 ">
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-4" />
+                    ) : (
+                      <Eye className="size-4" />
+                    )}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end">
+                <span
+                  onClick={() => {
+                    navigate("/forgot-password");
+                  }}
+                  className="text-sm underline text-muted-foreground cursor-pointer"
+                >
+                  Quên mật khẩu
+                </span>
               </div>
 
               {/* button */}
@@ -95,7 +132,7 @@ export function SignInForm({
               </Button>
 
               <div className="text-center text-sm">
-                Mới vào Chattee? {""}
+                Mới vào Chattee?
                 <a href="/signup" className="underline underline-offset-4">
                   Tạo tài khoản
                 </a>

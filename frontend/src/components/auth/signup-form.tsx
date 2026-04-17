@@ -8,14 +8,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
-const signUpSchema = z.object({
-  firstName: z.string().min(1, "Tên không thể để trống"),
-  lastName: z.string().min(1, "Họ không thể để trống"),
-  userName: z.string().min(3, "Tên đăng nhập phải tối thiểu 3 ký tự"),
-  email: z.email("Email không đúng định dạng hoặc đã tồn tại"),
-  password: z.string().min(6, "Mật khẩu phải tối thiểu 6 ký tự"),
-});
+const signUpSchema = z
+  .object({
+    firstName: z.string().min(1, "Tên không thể để trống"),
+    lastName: z.string().min(1, "Họ không thể để trống"),
+    userName: z.string().min(3, "Tên đăng nhập phải tối thiểu 3 ký tự"),
+    email: z.email("Email không đúng định dạng hoặc đã tồn tại"),
+    password: z.string().min(6, "Mật khẩu phải tối thiểu 6 ký tự"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Mật khẩu không khớp",
+    path: ["confirmPassword"],
+  });
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export function SignupForm({
@@ -35,7 +42,10 @@ export function SignupForm({
   const onSubmit = async (data: SignUpFormValues) => {
     const { userName, password, email, firstName, lastName } = data;
     await signUp(userName, password, email, firstName, lastName);
-    navigate("/signin");
+    navigate("/auth/verify-email");
+    toast.success(
+      "Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản.",
+    );
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -131,6 +141,23 @@ export function SignupForm({
                 {errors.password && (
                   <p className="text-destructive text-sm">
                     {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              {/*confirm password */}
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="confirmPassword" className="block text-sm">
+                  Nhập lại mật khẩu
+                </Label>
+                <Input
+                  type="password"
+                  id="confirmPassword"
+                  {...register("confirmPassword")}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-destructive text-sm">
+                    {errors.confirmPassword.message}
                   </p>
                 )}
               </div>

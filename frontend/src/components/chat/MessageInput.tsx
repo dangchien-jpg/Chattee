@@ -26,6 +26,7 @@ const MessageInput = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   if (!user) return;
 
@@ -116,13 +117,20 @@ const MessageInput = ({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   };
 
+  const handleInput = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  };
   if (!isFriend) {
     return (
       <Input
@@ -134,7 +142,7 @@ const MessageInput = ({
   }
 
   return (
-    <div className="flex items-center gap-2 p-3 m-h-[56px] bg-background ">
+    <div className="flex items-end gap-2 p-3 m-h-[56px] bg-background ">
       <Button
         onClick={handleClick}
         variant={"ghost"}
@@ -150,10 +158,13 @@ const MessageInput = ({
         />
       </Button>
 
-      <div className="flex-1 border border-input shadow-sm focus-within:border-primary/50 rounded px-2 py-1 flex-row items-center gap-6 bg-white">
+      <div
+        className="flex flex-col  w-full border border-input shadow-sm focus-within:border-primary/50 rounded-md px-3 py-1 text-base gap-6 bg-white
+                   dark:bg-accent-foreground dark:border-none"
+      >
         {/* preview ảnh */}
         {preview && (
-          <div className="relative w-10 h-10 shrink-0 mt-2 mb-4">
+          <div className="relative w-10 h-10 shrink-0 mt-2">
             <img
               src={preview}
               alt="preview"
@@ -172,17 +183,25 @@ const MessageInput = ({
         )}
 
         {/* input */}
-        <div className="flex">
-          <input
+        <div className="flex items-end flex-1">
+          <textarea
             value={value}
+            ref={textareaRef}
             onKeyDown={handleKeyPress}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              handleInput();
+              setValue(e.target.value);
+            }}
             placeholder="Soạn tin nhắn..."
-            className="flex-1 outline-none bg-transparent text-sm"
+            rows={1}
+            className="
+            flex-1 py-2  resize-none outline-none bg-transparent text-base
+            leading-5 max-h-32 overflow-y-hidden
+          "
           />
 
           {/* emoji */}
-          <div className="flex items-center">
+          <div>
             <EmojiPicker
               onChange={(emoji: string) => setValue(value + emoji)}
             />

@@ -45,6 +45,17 @@ const userSchema = new mongoose.Schema(
       enum: ["active", "inactive", "banned"],
       default: "active",
     },
+    //VERIFY EMAIL
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: String,
+    verifyTokenExpires: Date,
+
+    // RESET PASSWORD (OTP)
+    resetOTP: String,
+    resetOTPExpires: Date,
   },
   {
     timestamps: true,

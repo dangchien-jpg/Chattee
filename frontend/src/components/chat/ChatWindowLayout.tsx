@@ -3,17 +3,27 @@ import ChatWindowBody from "@/components/chat/ChatWindowBody";
 import ChatWindowHeader from "@/components/chat/ChatWindowHeader";
 import ChatWindowSkeleton from "@/components/chat/ChatWindowSkeleton";
 import MessageInput from "@/components/chat/MessageInput";
-import { SidebarInset } from "@/components/ui/sidebar";
+import { SidebarInset, useSidebar } from "@/components/ui/sidebar";
 import { useChatStore } from "@/stores/useChatStore";
 import { useEffect } from "react";
 
 const ChatWindowLayout = () => {
+  const { setOpen, setOpenMobile, isMobile } = useSidebar();
+
   const {
     activeConversationId,
     conversations,
     messageLoading: loading,
     markAsSeen,
   } = useChatStore();
+
+  useEffect(() => {
+    if (isMobile) {
+      setOpenMobile(true);
+    } else {
+      setOpen(true);
+    }
+  }, [isMobile]);
 
   const selectedConversation =
     conversations.find((c) => c._id === activeConversationId) ?? null;

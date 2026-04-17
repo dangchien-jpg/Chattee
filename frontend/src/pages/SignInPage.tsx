@@ -2,6 +2,7 @@ import { SignInForm } from "@/components/auth/signin-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { toast } from "sonner";
 
 const SignInPage = () => {
   const { user, accessToken } = useAuthStore();
@@ -9,6 +10,12 @@ const SignInPage = () => {
 
   useEffect(() => {
     if (!accessToken || !user) return;
+    if (!user.isVerified) {
+      toast.warning(
+        "Tài khoản chưa xác minh, hãy vào email của bạn để xác minh!",
+      );
+      return;
+    }
     if (user.status === "banned") {
       navigate("/disable", { replace: true });
       return;

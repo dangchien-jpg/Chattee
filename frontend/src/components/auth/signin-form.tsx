@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router";
+import { isAxiosError } from "axios";
 
 const signInSchema = z.object({
   userName: z.string().min(1, "Tên đăng nhập không thể trống"),
@@ -37,8 +38,8 @@ export function SignInForm({
     try {
       const { userName, password } = data;
       await signIn(userName, password);
-    } catch (error: any) {
-      if (error.response?.data?.code === "EMAIL_NOT_VERIFIED") {
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.data?.code === "EMAIL_NOT_VERIFIED") {
         toast.warning(
           "Tài khoản chưa được xác minh. Vui lòng kiểm tra email để hoàn tất đăng ký.",
         );
@@ -111,7 +112,7 @@ export function SignInForm({
                 </div>
               </div>
 
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-end ">
                 <span
                   onClick={() => {
                     navigate("/forgot-password");

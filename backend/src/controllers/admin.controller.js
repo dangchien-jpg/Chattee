@@ -9,12 +9,29 @@ export const getAllUsers = async (req, res) => {
         .json({ message: "You are not allowed to perform this action" });
     }
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const totalUsers = await userModel.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
+
     const users = await userModel
       .find()
       .select("-hashedPassword")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    return res.status(200).json({ users });
+    return res.status(200).json({
+      users,
+      pagination: {
+        totalUsers,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
   } catch (error) {
     console.error("Admin get all users: ", error);
     return res.status(500).json({ message: "Server errors" });

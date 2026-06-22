@@ -121,7 +121,13 @@ export interface UserState {
 
 export interface AdminState {
   Users: User[];
+  pagination: {
+    totalUsers: number;
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  } | null;
   loading: boolean;
-  getAllUsers: () => Promise<void>;
+  getAllUsers: (page?: number, limit?: number) => Promise<void>;
   blockUser: (userId: string) => Promise<void>;
 }

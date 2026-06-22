@@ -1,10 +1,9 @@
 import api from "@/lib/axios";
 
 export const adminService = {
-  getAllUser: async () => {
-    const res = await api.get("/admin/users");
-
-    return res.data.users;
+  getAllUser: async (page: number = 1, limit: number = 10) => {
+    const res = await api.get(`/admin/users?page=${page}&limit=${limit}`);
+    return res.data;
   },
 
   blockUser: async (userId: string) => {

@@ -4,12 +4,13 @@ import { create } from "zustand";
 
 export const useAdminStore = create<AdminState>((set, get) => ({
   Users: [],
+  pagination: null,
   loading: false,
-  getAllUsers: async () => {
+  getAllUsers: async (page = 1, limit = 10) => {
     try {
       set({ loading: true });
-      const data = await adminService.getAllUser();
-      set({ Users: data });
+      const data = await adminService.getAllUser(page, limit);
+      set({ Users: data.users, pagination: data.pagination });
     } catch (error) {
       console.error(error);
     } finally {

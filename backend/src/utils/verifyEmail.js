@@ -46,7 +46,7 @@ export const sendVerifyEmail = async (token, email) => {
         </div>
       `,
     };
-    const info = await transporter.sendMail(mailConfig);
+   await transporter.sendMail(mailConfig);
     return true;
   } catch (error) {
     console.error("Send email error:", error);

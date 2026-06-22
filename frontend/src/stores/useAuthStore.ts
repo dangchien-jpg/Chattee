@@ -37,9 +37,10 @@ export const useAuthStore = create<AuthState>()(
             firstName,
             lastName,
           );
-        } catch (error) {
+        } catch (error: any) {
           console.error(error);
-          toast.error("Có lỗi xảy ra khi đăng ký tài khoản");
+          toast.error(error.response?.data?.message || "Có lỗi xảy ra khi đăng ký tài khoản");
+          throw error;
         } finally {
           set({ loading: false });
         }

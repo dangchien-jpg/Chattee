@@ -27,7 +27,7 @@ const VerifyMailPage = () => {
 
   const calledRef = useRef(false);
 
-  // ================= VERIFY =================
+  // ================= VERIFY ===========================
   useEffect(() => {
     if (!token || calledRef.current) return;
 
@@ -67,7 +67,7 @@ const VerifyMailPage = () => {
       });
   }, [token]);
 
-  // ================= Resend Email =================
+  // ================= Resend Email =======================
   const startCoolDown = () => {
     setCanResend(false);
     setCoolDown(30);

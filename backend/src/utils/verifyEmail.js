@@ -1,14 +1,19 @@
 import nodemailer from "nodemailer";
+import dns from "dns";
 
 export const sendVerifyEmail = async (token, email) => {
   try {
+    dns.setDefaultResultOrder("ipv4first");
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
@@ -49,9 +54,8 @@ export const sendVerifyEmail = async (token, email) => {
       `,
     };
    await transporter.sendMail(mailConfig);
-    return true;
   } catch (error) {
     console.error("Send email error:", error);
-    return false;
+    throw error;
   }
 };

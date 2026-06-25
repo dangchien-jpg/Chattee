@@ -4,9 +4,11 @@ export const sendVerifyEmail = async (token, email) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      port: 465,
+      secure: true,
       family: 4,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,

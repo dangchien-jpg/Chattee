@@ -4,8 +4,11 @@ export const sendResetOTPEmail = async (email, otp) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
+      port: 465,
       secure: false,
+      family: 4,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,

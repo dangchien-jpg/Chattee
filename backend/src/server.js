@@ -1,6 +1,4 @@
 import express from "express";
-import dns from "dns";
-dns.setDefaultResultOrder("ipv4first");
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";

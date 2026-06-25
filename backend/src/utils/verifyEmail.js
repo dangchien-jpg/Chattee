@@ -1,13 +1,12 @@
 import nodemailer from "nodemailer";
-import dns from "dns";
 
 export const sendVerifyEmail = async (token, email) => {
   try {
-    dns.setDefaultResultOrder("ipv4first");
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
+      family: 4,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,
